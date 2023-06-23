@@ -39,8 +39,8 @@ set statusline+=\ pos:\ %-4l\ %-4c\ %3p%%
 " VIMSCRIPT {{{
 
 augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
+	autocmd!
+	autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
 set nobackup
@@ -71,6 +71,8 @@ set colorcolumn=81
 set scrolloff=8
 set cursorline
 set ttyfast
+set listchars=nbsp:█,space:·,tab:•-,extends:»,precedes:«,trail:*
+set list
 
 set history=200
 
