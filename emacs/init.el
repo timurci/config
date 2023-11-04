@@ -1,5 +1,11 @@
 ;; Packages
 
+(unless (file-exists-p "~/.emacs.d/emacs-custom.el")
+  (write-region "" nil "~/.emacs.d/emacs-custom.el"))
+(setq custom-file "~/.emacs.d/emacs-custom.el")
+(load custom-file)
+
+(require 'package)
 (add-to-list 'package-archives
 '("melpa" . "https://melpa.org/packages/"))
 
@@ -10,16 +16,84 @@
   (package-refresh-contents)
   (package-install 'use-packqage))
 
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode t))
+
+(use-package all-the-icons ; manually run (all-the-icons-install-fonts)
+  :ensure t
+  :if (display-graphic-p))
+
+(use-package all-the-icons-dired
+  :ensure t
+  :init (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+
+(use-package all-the-icons-ivy
+  :ensure t
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+
 (use-package counsel
-  :ensure t)
+  :ensure t
+  :after ivy
+  :config (counsel-mode))
+
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :init
+  (add-hook 'after-init-hook
+	    '(lambda() (set-face-attribute 'ivy-posframe-border nil :background "#17171a"))) ; border does not properly initialize unless added as a hook
+  :config
+  (setq ivy-display-functions-alist
+	'((counsel-find-file . ivy-posframe-display-at-frame-center)
+	  (counsel-M-x . ivy-posframe-display-at-frame-center)
+	  (counsel-describe-function . ivy-posframe-display-at-frame-center)
+	  (counsel-describe-variable . ivy-posframe-display-at-frame-center)
+	  (counsel-describe-symbol . ivy-posframe-display-at-frame-center)
+	  (counsel-find-library . ivy-posframe-display-at-frame-center)
+	  (counsel-info-lookup-symbol . ivy-posframe-display-at-frame-center)
+	  (counsel-unicode-char . ivy-posframe-display-at-frame-center)
+	  (counsel-git . ivy-posframe-display-at-frame-center)
+	  (counsel-git-grep . ivy-posframe-display-at-frame-center)
+	  (counsel-locate . ivy-posframe-display-at-frame-center)
+	  (counsel-rythmbox . ivy-posframe-display-at-frame-center)))
+  (setq ivy-posframe-parameters
+      '((left-fringe . 0)
+        (right-fringe . 0)
+	))
+  (setq ivy-posframe-border-width 20)
+  (set-face-attribute 'ivy-posframe nil :foreground "#c7c7b0" :background "#17171a")
+  )
+
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :config (ivy-rich-mode))
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist
+	'((counsel-minor . "+")
+	 (counsel-package . "+")
+	 (counsel-org-capture . "")
+	 (counsel-M-x . "")
+	 (counsel-describe-symbol . "")
+	 (org-refile . "")
+	 (org-agenda-refile . "")
+	 (org-capture-refile . "")
+	 (Man-completion-table . "")
+	 (woman . ""))
+	))
 
 (use-package swiper
   :ensure t
   :config
-  (progn
-    (ivy-mode)
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
+  (progn    
     ;; enable this if you want `swiper' to use it
     ;; (setq search-default-mode #'char-fold-to-regexp)
     (global-set-key "\C-s" 'swiper)
@@ -147,30 +221,23 @@
 
 ;; Editing conventions
 (electric-pair-mode t)
-(setq electric-pair-pairs (append electric-pair-pairs '((?\{ . ?\})) ))
+(add-to-list 'electric-pair-pairs '(?\{ . ?\}) )
 
 ;; Windows management
 (winner-mode t)
 (windmove-default-keybindings)
 
 ;; Startup
+(setq ring-bell-function 'ignore)
+(add-to-list 'default-frame-alist '(fullscreen . maximized)) ; launch emacs maximized
 (setq inhibit-startup-message t)
-(recentf-open-files
+(recentf-open-files)
 
 ;; Keybinding
 (global-set-key (kbd "C-v") (lambda() (interactive) (scroll-up 3)))
 (global-set-key (kbd "M-v") (lambda() (interactive) (scroll-down 3)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(delete-selection-mode nil)
- '(package-selected-packages '(counsel swiper modus-themes)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-<down>") 'shrink-window)
+(global-set-key (kbd "S-C-<up>") 'enlarge-window)
