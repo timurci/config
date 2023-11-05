@@ -1,10 +1,9 @@
-;; Packages
-
 (unless (file-exists-p "~/.emacs.d/emacs-custom.el")
   (write-region "" nil "~/.emacs.d/emacs-custom.el"))
 (setq custom-file "~/.emacs.d/emacs-custom.el")
 (load custom-file)
 
+;; Packages
 (require 'package)
 (add-to-list 'package-archives
 '("melpa" . "https://melpa.org/packages/"))
@@ -20,6 +19,35 @@
   :ensure t
   :config
   (which-key-mode t))
+
+(use-package dashboard
+  :ensure t
+  :after all-the-icons
+  :config
+  ;; Set the title
+  (setq dashboard-banner-logo-title "Welcome to Emacs")
+  ;; Set the banner
+  (setq dashboard-startup-banner 'logo)
+  ;; Value can be
+  ;; - nil to display no banner
+  ;; - 'official which displays the official emacs logo
+  ;; - 'logo which displays an alternative emacs logo
+  ;; - 1, 2 or 3 which displays one of the text banners
+  ;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
+  ;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
+
+  ;; Content is not centered by default. To center, set
+  (setq dashboard-center-content t)
+
+  ;; To disable shortcut "jump" indicators for each section, set
+  (setq dashboard-show-shortcuts nil)
+  (if (package-installed-p 'all-the-icons)
+  (progn
+  (setq dashboard-icon-type 'all-the-icons)
+  (setq dashboard-display-icons-p t)
+  (setq dashboard-set-heading-icons nil)
+  (setq dashboard-set-file-icons t)))
+  (dashboard-setup-startup-hook))
 
 (use-package all-the-icons ; manually run (all-the-icons-install-fonts)
   :ensure t
@@ -57,7 +85,8 @@
 	  (counsel-git . ivy-posframe-display-at-frame-center)
 	  (counsel-git-grep . ivy-posframe-display-at-frame-center)
 	  (counsel-locate . ivy-posframe-display-at-frame-center)
-	  (counsel-rythmbox . ivy-posframe-display-at-frame-center)))
+	  (counsel-rythmbox . ivy-posframe-display-at-frame-center)
+	  (ivy-completion-in-region . ivy-posframe-display-at-point)))
   (setq ivy-posframe-parameters
       '((left-fringe . 0)
         (right-fringe . 0)
@@ -114,6 +143,27 @@
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
     ))
+
+
+;; Lsp
+
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui))
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
 ;; Modus themes configuration
 (setq modus-themes-custom-auto-reload t
@@ -227,12 +277,6 @@
 (winner-mode t)
 (windmove-default-keybindings)
 
-;; Startup
-(setq ring-bell-function 'ignore)
-(add-to-list 'default-frame-alist '(fullscreen . maximized)) ; launch emacs maximized
-(setq inhibit-startup-message t)
-(recentf-open-files)
-
 ;; Keybinding
 (global-set-key (kbd "C-v") (lambda() (interactive) (scroll-up 3)))
 (global-set-key (kbd "M-v") (lambda() (interactive) (scroll-down 3)))
@@ -241,3 +285,17 @@
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+
+;; CC mode
+(setq c-basic-offset 4) ; Can use tab-to-tab-stop, M-i
+(setq tab-width 4)
+
+;; Startup
+(setq ring-bell-function 'ignore)
+(add-to-list 'default-frame-alist '(fullscreen . maximized)) ; launch emacs maximized
+;(setq inhibit-startup-message t)
+;(recentf-open-files)
+;(setq initial-buffer-choice 'calendar)
+(set-face-attribute 'default nil :font "Hack 13" )
+(set-frame-font "Hack 13" nil t)
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
