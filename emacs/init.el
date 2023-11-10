@@ -20,6 +20,16 @@
   :config
   (which-key-mode t))
 
+(use-package org
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'org-indent-mode))
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'org-bullets-mode))
+
 (use-package dashboard
   :ensure t
   :after all-the-icons
@@ -106,6 +116,7 @@
   (ivy-mode)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  (setq ivy-use-selectable-prompt t)
   (setq ivy-initial-inputs-alist
 	'((counsel-minor . "+")
 	 (counsel-package . "+")
@@ -146,6 +157,15 @@
 
 
 ;; Lsp
+
+(use-package tree-sitter
+  :ensure t
+  :config
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :ensure t)
 
 (use-package company
   :ensure t
@@ -220,6 +240,13 @@
 	;; Stuff
 	;(name green)
 	;(identifier green)
+
+	;; Link colors
+	(underline-link border)
+	(underline-link-visited border)
+	(underline-link-symbolic border)
+	(fg-link cyan-intense)
+	(fg-link-visited cyan-faint)
 	
 	;; Syntax colors
 	(comment yellow-faint) ; cooler is good too
@@ -272,6 +299,7 @@
 ;; Editing conventions
 (electric-pair-mode t)
 (add-to-list 'electric-pair-pairs '(?\{ . ?\}) )
+(setq fill-column 100)
 
 ;; Windows management
 (winner-mode t)
@@ -287,8 +315,20 @@
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
 ;; CC mode
-(setq c-basic-offset 4) ; Can use tab-to-tab-stop, M-i
-(setq tab-width 4)
+(setq-default tab-width 4
+			  indent-tabs-mode t) ; Can use tab-to-tab-stop, M-i
+(defun my-c-code-hook ()
+  (progn
+	(c-add-style "custom"
+				 '("linux"
+				   (c-basic-offset . 4)
+				   (c-offsets-alist (access-label . 0))
+				   ))
+	(setq c-default-style "custom")
+	(c-set-style "custom")
+	))
+(add-hook 'c-mode-hook 'my-c-code-hook)
+(add-hook 'c++-mode-hook 'my-c-code-hook)
 
 ;; Startup
 (setq ring-bell-function 'ignore)
