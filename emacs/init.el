@@ -20,6 +20,28 @@
   :config
   (which-key-mode t))
 
+;u(use-package pyenv-mode
+;  :ensure t
+;  :config
+;  (add-hook 'python-mode-hook pyenv-mode)
+;  (add-hook 'python-mode-hook 'lsp))
+
+(use-package pyvenv
+  :ensure t
+  :init
+  (setenv "WORKON_HOME" "~/python_versions/")
+  :config
+  (pyvenv-workon "python3.10.12")
+  :hook (python-mode . pyvenv-mode)
+  )
+
+(use-package lsp-pyright
+  :ensure t
+  ;:hook (python-mode . (lambda ()
+  :hook (pyvenv-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
+
 (use-package org
   :ensure t
   :config
@@ -176,7 +198,7 @@
   :ensure t
   :after lsp-mode
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package lsp-mode
   :ensure t
