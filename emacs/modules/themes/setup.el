@@ -30,7 +30,7 @@
 
 ;; Margins
 ;; (setq-default left-margin-width 1 right-margin-width 1)
-(set-frame-parameter nil 'internal-border-width 8)
+(set-frame-parameter nil 'internal-border-width 1)
 
 
 ;; Disable fringes

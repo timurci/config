@@ -3,9 +3,25 @@
 (defun my-modus-themes-custom-faces (&rest _)
   (modus-themes-with-colors
     (custom-set-faces
-     `(tab-bar-tab ((,c :underline (:color ,red-intense :position t))))
-     `(tab-bar ((,c :box (:color ,bg-main :line-width (0 . 8))))
-	       )
+     ;; Mode-line configuration
+     `(mode-line
+       ((,c :box (:color ,bg-active :line-width 5))))
+     `(mode-line-inactive
+       ((,c :box (:color ,bg-inactive :line-width 5))))
+     ;; Tab-bar configuration
+     `(tab-bar-tab
+       ((,c :foreground ,red :underline (:color ,red-warmer :position t))))
+     `(tab-bar
+       ((,c :box (:color ,bg-main :line-width (0 . 8)))))
+     `(tab-bar-tab-inactive
+       ((,c :foreground ,fg-dim :underline (:color ,border :position t))))
+     ;; Git-gutter package configuration
+     `(git-gutter:added
+       ((,c :foreground ,bg-added-fringe :background unspecified)))
+     `(git-gutter:deleted
+       ((,c :foreground ,bg-removed-fringe :background unspecified)))
+     `(git-gutter:modified
+       ((,c :foreground ,bg-changed-fringe :background unspecified)))
      )))
 
 (use-package modus-themes
