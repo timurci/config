@@ -6,6 +6,7 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 	 (rust-mode . lsp-deferred)
+	 (python-mode . lsp-deferred)
          ;; (XXX-mode . lsp-deferred)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
