@@ -36,3 +36,8 @@
 
 ;; Lsp-mode @ lang/lsp.el
 ;; (setq lsp-keymap-prefix "C-c l")
+
+;; Focus to minibuffer
+(keymap-global-set (composed "o") 'switch-to-minibuffer)
+
+

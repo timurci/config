@@ -2,6 +2,22 @@
 
 (provide 'modules-essential)
 
+;;; Startup options
+
+(setq frame-resize-pixelwise t)
+
+;; Set initial buffer to *scratch*
+(setq initial-buffer-choice t)
+
+;; Set initial frame options
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+
+;;; Minibuffer
+
+;; Max. minibuffer height
+(setq max-mini-window-height 0.10)
+
 ;;; Utilities
 
 ;; Keep track of recently opened files
