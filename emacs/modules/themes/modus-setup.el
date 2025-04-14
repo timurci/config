@@ -12,7 +12,7 @@
      `(tab-bar-tab
        ((,c :foreground ,red :underline (:color ,red-warmer :position t))))
      `(tab-bar
-       ((,c :box (:color ,bg-main :line-width (0 . 8)))))
+       ((,c :box (:color ,bg-main :line-width 5))))
      `(tab-bar-tab-inactive
        ((,c :foreground ,fg-dim :underline (:color ,border :position t))))
      ;; Git-gutter package configuration

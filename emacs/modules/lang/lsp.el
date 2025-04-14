@@ -5,8 +5,13 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	 ;; (prog-mode . lsp-deferred)
 	 (rust-mode . lsp-deferred)
 	 (python-mode . lsp-deferred)
+	 (tex-mode . lsp-deferred)
+	 (c-mode . lsp-deferred)
+	 (c++-mode . lsp-deferred)
+	 ;; (haskell-mode . lsp-deferred)
          ;; (XXX-mode . lsp-deferred)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration)

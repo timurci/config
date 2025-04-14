@@ -4,6 +4,7 @@
 
 (require 'lang-rust "lang/rust.el")
 (require 'lang-python "lang/python.el")
+(require 'lang-tex "lang/tex.el")
 
 (require 'lang-syntax "lang/syntax.el")
 (require 'lang-lsp "lang/lsp.el")
