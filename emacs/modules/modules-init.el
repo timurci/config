@@ -2,9 +2,11 @@
 
 ;;; Repositories
 
-(add-to-list 'package-archives
-	     '(("melpa-stable" . "https://stable.melpa.org/packages/")
-	       ("melpa" . "https://melpa.org/packages/")))
+(setq package-archives
+      '(("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
 ;; (package-initialize)
 ;; (package-refresh-contents)
